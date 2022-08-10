@@ -1,0 +1,24 @@
+﻿@page "/samplepage"
+@using Net.Codecrete.QrCodeGenerator
+@using System.Text
+
+<h3>SamplePage</h3>
+
+<MudButton Color="Color.Primary" Variant="Variant.Filled" @onclick="IncrementCount">Click me</MudButton>
+
+<MudImage Src="@ImageDataURL"></MudImage>
+
+@code {
+
+    public string ImageDataURL { get; set; }
+
+    private void IncrementCount()
+    {
+        var qr = QrCode.EncodeText("Hello, world!", QrCode.Ecc.Medium);
+        string svg = qr.ToSvgString(4);
+        var byteArray = Encoding.ASCII.GetBytes(svg);
+       
+        var imageSrc = Convert.ToBase64String(byteArray);
+        ImageDataURL = $"data:image/svg+xml;base64,{imageSrc}";
+    }
+}
